@@ -1,0 +1,7 @@
+CREATE TABLE Users (name VARCHAR(128), email VARCHAR(128))
+ SELECT*FROM Users #retrieve part of CRUD
+    SELECT*FROM Users WHERE email='csev@umich.edu'
+    SELECT*FROM Users ORDER BY email
+INSERT INTO Users (name, email) VALUES ('kristin', 'kf@umich.edu')
+UPDATE Users SET name='Charles' WHERE email='csev@umich.edu'
+DELETE FROM Users WHERE email='fred@umich.edu'
