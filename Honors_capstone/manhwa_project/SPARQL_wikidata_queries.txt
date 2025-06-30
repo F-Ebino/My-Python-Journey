@@ -1,0 +1,126 @@
+
+
+SELECT ?manhwa ?manhwaLabel ?authorLabel ?countryLabel ?genreLabel ?pubDate WHERE {
+  ?manhwa wdt:P31 wd:Q74262765.        # instance of webcomic
+  ?manhwa wdt:P495 wd:Q884          # country of origin
+  
+            
+  OPTIONAL {?manhwa wdt:P407 wd:Q9176 }
+
+  OPTIONAL { ?manhwa wdt:P50 ?author. }    # author (optional)
+  OPTIONAL { ?manhwa wdt:P495 ?country. }  # country (optional)
+  OPTIONAL { ?manhwa wdt:P136 ?genre. }    # genre (optional)
+  OPTIONAL { ?manhwa wdt:P577 ?pubDate. }
+
+
+  SERVICE wikibase:label {                   # auto-translate IDs to names
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+
+}
+LIMIT 50
+--------------------------------------------------------------------------------------------------
+SELECT ?manhwa ?manhwaLabel ?authorLabel ?countryLabel ?genreLabel ?pubDate WHERE {
+  ?webcomic wdt:P31 wd:Q74262765.        # instance of webcomic
+  
+  ?manhwa wdt:P495 ?countryofOrigin          # country of origin
+  FILTER (?countryofOrigin IN (wd:Q884, wd:Q148))  # Korea or China)
+            
+  OPTIONAL {?manhwa wdt:P407 ?itemLanguage }
+  FILTER (?itemLanguage IN (wd:Q9176, wd:Q7850))
+
+  OPTIONAL { ?manhwa wdt:P50 ?author. }    # author (optional)
+  OPTIONAL { ?manhwa wdt:P495 ?country. }  # country (optional)
+  OPTIONAL { ?manhwa wdt:P136 ?genre. }    # genre (optional)
+  OPTIONAL { ?manhwa wdt:P577 ?pubDate. }
+
+
+  SERVICE wikibase:label {                   # auto-translate IDs to names
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+
+}
+LIMIT 50
+--------------------------------------------------------------------------------
+SELECT ?webcomic ?webcomicLabel ?authorLabel ?countryLabel ?genreLabel WHERE {
+  ?webcomic wdt:P31 wd:Q213369.        # instance of webcomic
+
+  ?webcomic wdt:P495 ?countryofOrigin          # country of origin
+  FILTER ((?countryofOrigin IN (wd:Q884, wd:Q148))  # Korea or China)
+
+  OPTIONAL { ?webcomic wdt:P50 ?author. }    # author (optional)
+  OPTIONAL { ?webcomic wdt:P495 ?country. }  # country (optional)
+  OPTIONAL { ?webcomic wdt:P136 ?genre. }    # genre (optional)
+  OPTIONAL { ?webcomic wdt:P577 ?pubDate. }
+
+
+  SERVICE wikibase:label {                   # auto-translate IDs to names
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+------------------------------------------------------------------------------------------
+SELECT ?webcomic ?webcomicLabel ?authorLabel ?countryLabel ?genreLabel ?pubDate WHERE {
+  ?webcomic wdt:P31 wd:Q213369.        # instance of webcomic
+  
+  ?webcomic wdt:P495 ?countryofOrigin          # country of origin
+  FILTER (?countryofOrigin IN (wd:Q884, wd:Q148))  # Korea or China)
+            
+  OPTIONAL {?webcomic wdt:P407 ?itemLanguage }
+  FILTER (?itemLanguage IN (wd:Q9176, wd:Q7850))
+
+  OPTIONAL { ?webcomic wdt:P50 ?author. }    # author (optional)
+  OPTIONAL { ?webcomic wdt:P495 ?country. }  # country (optional)
+  OPTIONAL { ?webcomic wdt:P136 ?genre. }    # genre (optional)
+  OPTIONAL { ?webcomic wdt:P577 ?pubDate. }
+
+
+  SERVICE wikibase:label {                   # auto-translate IDs to names
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+
+}
+LIMIT 1000
+
+-----------------------------------------------------------------------------------------------
+}
+LIMIT 50
+
+SELECT ?webcomic ?webcomicLabel ?authorLabel ?countryLabel ?genreLabel ?pubDate WHERE {
+  ?webcomic wdt:P31 wd:Q213369.        # instance of webcomic
+  ?webcomic wdt:P495 ?countryofOrigin          # country of origin
+  FILTER (?countryofOrigin IN (wd:Q884, wd:Q148))  # Korea or China)
+            
+  ?webcomic wdt:P407 ?itemLanguage
+  FILTER (?itemLanguage IN (wd:Q9176, wd:Q7850))          
+
+  OPTIONAL { ?webcomic wdt:P50 ?author. }    # author (optional)
+  OPTIONAL { ?webcomic wdt:P495 ?country. }  # country (optional)
+  OPTIONAL { ?webcomic wdt:P136 ?genre. }    # genre (optional)
+  OPTIONAL { ?webcomic wdt:P577 ?pubDate. }
+
+
+  SERVICE wikibase:label {                   # auto-translate IDs to names
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+
+}
+LIMIT 50
+-----------------------------------------------------------------------------------------
+SELECT ?item ?itemLabel ?authorLabel ?genreLabel ?countryLabel ?pubDate WHERE {
+  ?item wdt:P31 ?type.
+  FILTER(?type IN (wd:Q213369, wd:Q14406742)).  # webcomic or comic series
+
+  OPTIONAL { ?item wdt:P1705 ?itemLanguage. }  # original language
+  OPTIONAL { ?item wdt:P50 ?author. }
+  OPTIONAL { ?item wdt:P136 ?genre. }
+  OPTIONAL { ?item wdt:P495 ?country. }
+  OPTIONAL { ?item wdt:P577 ?pubDate. }
+
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+
+  FILTER (
+    (?itemLanguage IN (wd:Q9176, wd:Q7850))) #||  # Korean or Chinese language
+    #(CONTAINS(LCASE(?itemLabel), "manhwa") || CONTAINS(LCASE(?itemLabel), "manhua"))
+  #)
+}

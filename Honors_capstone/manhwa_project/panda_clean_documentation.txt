@@ -1,0 +1,37 @@
+import pandas as pd
+import sqlite3
+
+# 1. Read the exported CSV file into a pandas DataFrame
+df = pd.read_csv("manhwa_manhua.csv")  # Replace with your actual filename
+print("Original data loaded:")
+print(df.head())  # Show first few rows
+
+# 2. Clean column names for SQLite compatibility
+df.columns = [col.strip().lower().replace(" ", "_") for col in df.columns]
+# Explanation: This ensures column names are all lowercase and use underscores instead of spaces
+
+# 3. Remove exact duplicate rows
+df = df.drop_duplicates()
+# Explanation: Avoid repeated rows (which may have come from SPARQL returning entries with multiple genres)
+
+# 4. Strip leading/trailing whitespace from every string in the DataFrame
+df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)
+# Explanation: Ensures clean string values across the board
+
+# 5. Drop rows missing key data (like title or country of origin)
+df = df.dropna(subset=["comiclabel", "countrylabel"])
+# Explanation: You can adjust which columns are essential depending on your analysis needs
+
+# 6. Connect to SQLite database (creates the file if it doesn't exist)
+conn = sqlite3.connect("manhwa_manhua.sqlite")
+
+# 7. Insert DataFrame into a table called "comics"
+df.to_sql("comics", conn, if_exists="replace", index=False)
+# Explanation:
+# - if_exists="replace": deletes the table if it exists and recreates it
+# - index=False: prevents pandas from writing row numbers into the table
+
+# 8. Close the database connection
+conn.close()
+
+print("Data cleaned and inserted into manhwa_manhua.sqlite successfully.")
